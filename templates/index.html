@@ -1,0 +1,140 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <title>Azure App Service demo with Easy-auth</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+<body>
+  <!-- Navigation bar -->
+  <ul class="nav justify-content-end">
+      <li class="nav-item">
+        <a class="nav-link" href="/.auth/me">Details of current session</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/.auth/logout">Sign out</a>
+      </li>
+    </ul>
+    <!-- Logo and heading -->
+    <div class="px-4 py-3 my-2 text-center">
+      <img class="d-block mx-auto mb-4" src="{{ url_for('static', filename='images/azure-icon.svg') }}" alt="Azure Logo"
+        width="120" height="120" />
+      <h1>Azure App Service demo with Easy-auth</h1>
+    </div>
+    <!-- Easy Auth headers -->
+    <div class="container">
+      <!-- https://getbootstrap.com/docs/5.3/layout/grid/ -->
+      <div class="row">
+        <div class="col-12 py-3">
+          <h2>Easy Auth headers:</h2>
+          <small class="text-secondary">See <a href="https://learn.microsoft.com/en-us/azure/app-service/configure-authentication-user-identities">Work with user identities in Azure App Service authentication - Microsoft Learn</a></small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>User name:</strong><br /><small>(X-MS-CLIENT-PRINCIPAL-NAME)</small></div>
+        <div class="col-md-9">{{user_name}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Scopes:</strong><br /><small>(extracted from JWT access token)</small></div>
+        <div class="col-md-9">
+          <ul>
+            {% for scope in access_token_scope %}
+            <li>{{scope}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>payload:</strong><br /><small>(second part of JWT access token)</small></div>
+        <div class="col-md-9">{{access_token_payload}}</div>
+      </div>
+    </div>
+    <!-- OIDC (Open ID Connect) API result -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12 py-3">
+          <hr/>
+          <h2>OIDC (Open ID Connect) API result:</h2>
+          <small class="text-secondary">
+            URL = https://graph.microsoft.com/oidc/userinfo<br/>
+            See: <a href="https://learn.microsoft.com/en-us/entra/identity-platform/userinfo">Microsoft identity platform UserInfo endpoint - Microsoft Learn</a>
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Name:</strong></div>
+        <div class="col-md-9">{{ oidc_user_info.name }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>E-mail:</strong></div>
+        <div class="col-md-9">{{ oidc_user_info.email }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>All:</strong></div>
+        <div class="col-md-9">{{ oidc_user_info }}</div>
+      </div>
+    </div>
+    <!-- MS Graph API result -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12 py-3">
+          <hr/>
+          <h2>MS Graph API result:</h2>
+          <small class="text-secondary">
+            URL = https://graph.microsoft.com/v1.0/me<br/>
+            See: <a href="https://learn.microsoft.com/en-us/graph/api/user-get?view=graph-rest-1.0&tabs=http">Get a user - Microsoft Graph</a>
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Name:</strong></div>
+        <div class="col-md-9">{{ ms_graph_user_info.displayName }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>E-mail:</strong></div>
+        <div class="col-md-9">{{ ms_graph_user_info.mail }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Job title:</strong></div>
+        <div class="col-md-9">{{ ms_graph_user_info.jobTitle }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>User principal name:</strong></div>
+        <div class="col-md-9">{{ ms_graph_user_info.userPrincipalName }}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>All:</strong></div>
+        <div class="col-md-9">{{ ms_graph_user_info }}</div>
+      </div>
+    </div>
+    <!-- MS Graph Photo -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12 py-3">
+          <hr/>
+          <h2>MS Graph Photo:</h2>
+          <small class="text-secondary">
+            URL = https://graph.microsoft.com/v1.0/me/photos/120x120/$value<br/>
+            See: <a href="https://learn.microsoft.com/en-us/graph/api/profilephoto-get?view=graph-rest-1.0&tabs=http">Get profilePhoto - Microsoft Graph</a>
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"><strong>Photo:</strong></div>
+        <div class="col-md-9"><img src="profile_photo" /></div>
+      </div>
+    </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

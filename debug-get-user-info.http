@@ -1,0 +1,16 @@
+# This is a developer/debug file to query the Microsoft Graph API
+#
+# It requires the REST Client extension for VS Code:
+# https://github.com/Huachao/vscode-restclient
+# 
+# It's not part of the project, it's just a developer/debug file. Feel free to delete it.
+
+@access_token = <put your access token here>
+
+### Get user info
+GET https://graph.microsoft.com/v1.0/me
+Authorization: Bearer {{access_token}}
+
+### Get photo
+GET https://graph.microsoft.com/v1.0/me/photos/120x120/$value
+Authorization: Bearer {{access_token}}
