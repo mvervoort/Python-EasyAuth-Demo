@@ -1,3 +1,4 @@
+[![Board Status](https://dev.azure.com/marcovervoort/cf77a159-9967-4694-897f-3e1b506302fd/c7555c33-4440-45f1-9d96-868ee899743b/_apis/work/boardbadge/ca71c99a-d217-4fb2-b047-4badd13f1f3d)](https://dev.azure.com/marcovervoort/cf77a159-9967-4694-897f-3e1b506302fd/_boards/board/t/c7555c33-4440-45f1-9d96-868ee899743b/Microsoft.RequirementCategory)
 # Python-EasyAuth-Demo
 
 A Python demo project demonstrating Azure App Service EasyAuth authentication
